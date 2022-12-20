@@ -16,7 +16,7 @@ function generacion(redes, datos) {
 
     let generacion_nueva = [mejor_red];
     for (let i = 1; i < numero; i++) {
-        generacion_nueva.push(mejor_red.cambio_aleatorio());
+        generacion_nueva.push(mejor_red.cambio_aleatorio(mejor_error));
     }
 
     return generacion_nueva;
@@ -26,5 +26,6 @@ function n_generaciones(redes, datos, repeticiones) {
     for (let i = 0; i < repeticiones; i++) {
         redes = generacion(redes, datos);
     }
+    dibujar_red(redes[0]);
     return redes[0];
 }

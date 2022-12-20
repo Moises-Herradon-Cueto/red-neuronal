@@ -1,6 +1,20 @@
 
+/**@typedef {Object} opcionesRed
+ * @property {Array} numeros_de_neuronas - Número de neuronas en cada capa
+ * @property {Function} activacion - Función de activación de cada neurona, por
+ * ejemplo ReLu o sigmoide
+ * @property {number} velocidad_de_aprendizaje - Cómo de agresivamente varían los parámetros
+ */
+
+/**
+ * Una red neuronal
+ */
 class Red {
-    constructor({ numeros_de_neuronas, activacion, activacion_derivada, velocidad_de_aprendizaje }) {
+    /**
+     * @param {opcionesRed} opciones - Opciones: número de neuronas,
+     * velocidad de aprendizaje, función de activación.
+     */
+    constructor({ numeros_de_neuronas, activacion, velocidad_de_aprendizaje }) {
         this.numeros_de_neuronas = numeros_de_neuronas;
         this.neuronas = [];
         this.sesgos = [];
@@ -19,9 +33,15 @@ class Red {
             }
         }
         this.activacion = activacion;
-        this.activacion_derivada = activacion_derivada;
     }
 
+    /**
+     * 
+     * @param {Array} inputs - Entradas, tiene que tener la misma longitud
+     * que la capa 0
+     * @param {boolean} con_dibujo - Si se dibuja la red al final
+     * @returns {Array} - El resultado según la red neuronal
+     */
     feedforward(inputs, con_dibujo) {
         if (inputs.length !== this.neuronas[0].length) {
             return `Se requieren ${this.neuronas[0].length} entradas, pero hay ${inputs.length}!`;
@@ -49,6 +69,13 @@ class Red {
         return this.neuronas[this.neuronas.length - 1];
     }
 
+    /**
+     * 
+     * @param {Object} param0 - Entrada, y la salida correcta
+     * @param {boolean} dibujar - Si se dibuja
+     * @returns {number} el error - la suma de distancias al cuadrado
+     * con los valores deseados
+     */
     error({ input, output }, dibujar) {
         let calculado = this.feedforward(input, dibujar);
         let error = 0;
@@ -58,6 +85,11 @@ class Red {
         return error;
     }
 
+    /**
+     * 
+     * @param {Array} datos - Entradas {input, output}
+     * @returns {number} la suma de los errores
+     */
     errores_suma(datos) {
         let error_total = 0;
         for (let dato of datos) {
@@ -66,18 +98,24 @@ class Red {
         return error_total;
     }
 
-    cambio_aleatorio() {
+    /**
+     * 
+     * @param {number} coeficiente - número que multiplica a la agresividad
+     * del cambio
+     * @returns {Red} - una red con cambios aleatorios en todos los parámetros
+     */
+    cambio_aleatorio(coeficiente) {
         let red_nueva = copiar(this);
         for (let matriz of red_nueva.pesos) {
             for (let fila of matriz) {
                 for (let j in fila) {
-                    fila[j] += aleatorio_entre(-this.velocidad_de_aprendizaje, this.velocidad_de_aprendizaje);
+                    fila[j] += aleatorio_entre(-this.velocidad_de_aprendizaje * coeficiente, this.velocidad_de_aprendizaje * coeficiente);
                 }
             }
         }
         for (let fila of red_nueva.sesgos) {
             for (let i in fila) {
-                fila[i] += aleatorio_entre(-this.velocidad_de_aprendizaje, this.velocidad_de_aprendizaje);
+                fila[i] += aleatorio_entre(-coeficiente * this.velocidad_de_aprendizaje, coeficiente * this.velocidad_de_aprendizaje);
             }
         }
         return red_nueva;
