@@ -1,9 +1,14 @@
 
 /**@typedef {Object} opcionesRed
- * @property {Array} numeros_de_neuronas - Número de neuronas en cada capa
+ * @property {number[]} numeros_de_neuronas - Número de neuronas en cada capa
  * @property {Function} activacion - Función de activación de cada neurona, por
  * ejemplo ReLu o sigmoide
  * @property {number} velocidad_de_aprendizaje - Cómo de agresivamente varían los parámetros
+ */
+
+/**@typedef {Object} Datos
+ * @property {number[]} input
+ * @property {number[]} output
  */
 
 /**
@@ -37,10 +42,10 @@ class Red {
 
     /**
      * 
-     * @param {Array} inputs - Entradas, tiene que tener la misma longitud
+     * @param {number[]} inputs - Entradas, tiene que tener la misma longitud
      * que la capa 0
      * @param {boolean} con_dibujo - Si se dibuja la red al final
-     * @returns {Array} - El resultado según la red neuronal
+     * @returns {number[]} - El resultado según la red neuronal
      */
     feedforward(inputs, con_dibujo) {
         if (inputs.length !== this.neuronas[0].length) {
@@ -71,7 +76,7 @@ class Red {
 
     /**
      * 
-     * @param {Object} param0 - Entrada, y la salida correcta
+     * @param {Datos} param0 - Entrada, y la salida correcta
      * @param {boolean} dibujar - Si se dibuja
      * @returns {number} el error - la suma de distancias al cuadrado
      * con los valores deseados
@@ -87,7 +92,7 @@ class Red {
 
     /**
      * 
-     * @param {Array} datos - Entradas {input, output}
+     * @param {Datos[]} datos - Entradas {input, output}
      * @returns {number} la suma de los errores
      */
     errores_suma(datos) {
