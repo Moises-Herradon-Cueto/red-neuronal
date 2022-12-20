@@ -1,0 +1,37 @@
+#preview {
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.neuronas {
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+    justify-content: space-between;
+    margin-right: 90px;
+}
+
+.neurona {
+    border: 1px solid #cccccc;
+    box-shadow: 1px 1px #bbbbbb;
+    padding: 4px;
+    border-radius: 7px;
+    z-index: 20;
+    margin-top:5px;
+    background-color: #ffffdd;
+}
+
+.neurona p{
+    margin-bottom: 0px;
+}
+
+.neurona p:last-child {
+    font-size: smaller;
+    text-align: right;
+    margin-top: 0px;
+}
+
+.leader-line {
+    z-index: -2;
+}
